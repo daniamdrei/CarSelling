@@ -11,21 +11,19 @@
           <div class="container">
             <div class="slide-content">
               <h1 class="hero-slider-title">
-                Buy <strong>The Best Cars</strong> <br />
-                in your region
+                {{ __('landing.buy') }} <strong>{{ __('landing.best_car') }}</strong> <br />
+                {{ __('landing.in_your_region') }}
               </h1>
               <div class="hero-slider-content">
                 <p>
-                  Use powerful search tool to find your desired cars based on
-                  multiple search criteria: Maker, Model, Year, Price Range, Car
-                  Type, etc...
+                 {{__('landing.description')}}
                 </p>
 
-                <button class="btn btn-hero-slider">Find the car</button>
+                <button class="btn btn-hero-slider">{{ __('landing.find') }}</button>
               </div>
             </div>
             <div class="slide-image">
-              <img src="/img/car-png-39071.png" alt="" class="img-responsive" />
+              <img src="appAssets/img/car-png-39071.png" alt="" class="img-responsive" />
             </div>
           </div>
         </div>

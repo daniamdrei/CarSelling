@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+
+
 {{-- head begin--}}
-    @include('frontend.layout.head')
+@extends('frontend.layout.head')
+
 {{-- end head --}}
-  <body>
+@section('childContent')
 
     {{-- Header begin --}}
         @include('frontend.layout.header')
@@ -11,8 +12,4 @@
 
     @yield('content')
 
-{{-- script begin --}}
-    @include('frontend.layout.script')
-{{-- script end  --}}
-  </body>
-</html>
+@endsection

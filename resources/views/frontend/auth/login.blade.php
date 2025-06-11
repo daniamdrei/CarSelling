@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Car Findal Service</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <!-- <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css"
-      rel="stylesheet"
-    /> -->
-
-    <link rel="stylesheet" href="css/app.css" />
-    <!-- <link rel="stylesheet" href="css/output.css" /> -->
-  </head>
+@extends('frontend.layout.head' , ['cssClass'=>'page-signup'])
+  @section('title','login page')
+  @section('childContent')
   <body class="page-login">
     <main>
       <div class="container-small page-login">
@@ -33,59 +8,109 @@
           <div class="auth-page-form">
             <div class="text-center">
               <a href="/">
-                <img src="/img/logoipsum-265.svg" alt="" />
+                <img src="{{ asset('appAssets/img/logo2.png') }}" alt="" width="50%"/>
               </a>
             </div>
-            <h1 class="auth-page-title">Login</h1>
+            <h1 class="auth-page-title">@lang('vendors.login')</h1>
 
-            <form action="" method="post">
+            <form action="{{ route('login') }}" id="login-form" method="POST">
+                @csrf
               <div class="form-group">
-                <input type="email" placeholder="Your Email" />
+                <input type="email" name="email" required value="{{ old('email') }}"  placeholder="@lang('constants.email')" />
               </div>
               <div class="form-group">
-                <input type="password" placeholder="Your Password" />
+                <input type="password" name="password" required placeholder="@lang('constants.password')" />
               </div>
               <div class="text-right mb-medium">
                 <a href="/password-reset.html" class="auth-page-password-reset"
-                  >Reset Password</a
-                >
+                >@lang('auth.reset_password')</a>
               </div>
 
-              <button class="btn btn-primary btn-login w-full">Login</button>
+              <button type="submit" id="login-submit" class="btn btn-primary btn-login w-full">@lang('vendors.login')</button>
 
               <div class="grid grid-cols-2 gap-1 social-auth-buttons">
-                <button
-                  class="btn btn-default flex justify-center items-center gap-1"
-                >
-                  <img src="/img/google.png" alt="" style="width: 20px" />
-                  Google
-                </button>
-                <button
-                  class="btn btn-default flex justify-center items-center gap-1"
-                >
-                  <img src="/img/facebook.png" alt="" style="width: 20px" />
+                <a href="{{ route('auth.google_redirection') }}" class="btn btn-default flex justify-center items-center gap-1">
+                    <img src="{{ asset('appAssets/img/google.png') }}" alt="" style="width: 20px" />
+                    Google
+                </a>
+                <a href="{{ route('auth.facebook_redirection') }}" class="btn btn-default flex justify-center items-center gap-1">
+                  <img src="{{ asset('appAssets/img/facebook.png') }}" alt="" style="width: 20px" />
                   Facebook
-                </button>
+                </a>
               </div>
               <div class="login-text-dont-have-account">
-                Don't have an account? -
-                <a href="/signup.html"> Click here to create one</a>
+                @lang("auth.don't_have_an_account")? -
+                <a href="{{ route('showRegisterForm') }}"> @lang('vendors.sing_up')</a>
               </div>
             </form>
           </div>
           <div class="auth-page-image">
-            <img src="/img/car-png-39071.png" alt="" class="img-responsive" />
+            <img src="{{ asset('appAssets/img/car-png-39071.png') }}" alt="" class="img-responsive" />
           </div>
         </div>
       </div>
     </main>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/4.0.9/scrollreveal.js"
-      integrity="sha512-XJgPMFq31Ren4pKVQgeD+0JTDzn0IwS1802sc+QTZckE6rny7AN2HLReq6Yamwpd2hFe5nJJGZLvPStWFv5Kww=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/app.js"></script>
-  </body>
-</html>
+@push('script')
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const registerMessages = {
+        sending: "{{ __('auth.sending') }}",
+        registered: "{{ __('auth.Registered') }}",
+        errorOccurred: "{{ __('auth.error_occurred') }}",
+        registrationFailed: "{{ __('auth.registration_failed') }}",
+        createAccount: "{{ __('auth.create_account') }}"
+    };
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).ready(function () {
+        $('#login-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                email: $('input[name="email"]').val().trim(),
+                password: $('input[name="password"]').val(),
+            };
+
+            $('#login-submit').prop('disabled', true).text(registerMessages.sending);
+
+            $.post($('#login-form').attr('action'), formData)
+                .done(function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: registerMessages.registered,
+                        text: response.message
+                    }).then(() => {
+                        window.location.href = response.redirect || '/';
+                    });
+                })
+                .fail(function (xhr) {
+                    let message = registerMessages.errorOccurred;
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        message = Object.values(xhr.responseJSON.errors).flat()[0];
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: registerMessages.registrationFailed,
+                        text: message
+                    });
+
+                    $('#login-submit').prop('disabled', false).text(registerMessages.createAccount);
+                });
+        });
+    });
+</script>
+@endpush
+@endsection

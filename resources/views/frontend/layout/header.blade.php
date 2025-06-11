@@ -1,8 +1,8 @@
   <header class="navbar">
       <div class="container navbar-content">
-        <a href="/" class="logo-wrapper">
-          <img src="appAssets/img/logoipsum-265.svg" alt="Logo" />
-        </a>
+        {{-- <a href="/" class="logo-wrapper">
+          <img src=" {{ asset('appAssets/img/logo2.png')  }}" alt="Logo" />
+        </a> --}}
         <button class="btn btn-default btn-navbar-toggle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,11 +36,48 @@
               />
             </svg>
 
-            Add new Car
+            {{ __('landing.add_new_car')}}
           </a>
           <div class="navbar-menu" tabindex="-1">
             <a href="javascript:void(0)" class="navbar-menu-handler">
-              My Account
+              {{ __('landing.my_account') }}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                style="width: 20px"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </a>
+            @auth
+            <ul class="submenu">
+              <li>
+                <a href="my_cars.html">{{ __('landing.my_cars') }}</a>
+              </li>
+              <li>
+                <a href="watchlist.html">{{ __('landing.my_favorite_cars') }}</a>
+              </li>
+              <li>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                  <button>{{ __('panel.logout') }}</button>
+                </form>
+              </li>
+            </ul>
+            @endauth
+          </div>
+
+{{-- language --}}
+<div class="navbar-menu" tabindex="-1">
+            <a href="javascript:void(0)" class="navbar-menu-handler">
+              {{ __('vendors.language') }}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -57,20 +94,18 @@
               </svg>
             </a>
             <ul class="submenu">
-              <li>
-                <a href="my_cars.html">My Cars</a>
-              </li>
-              <li>
-                <a href="watchlist.html">My Favourite Cars</a>
-              </li>
-              <li>
-                <form action="#" method="post">
-                  <button>Logout</button>
-                </form>
-              </li>
+                @foreach (locales() as $localeCode=>$locale )
+                <li>
+                    <a href="{{LaravelLocalization::getLocalizedURL($localeCode)}}">
+                        <span>  {{ $locale['name'] }} </span>
+                    </a>
+                </li>
+                @endforeach
             </ul>
-          </div>
-          <a href="/signup.html" class="btn btn-primary btn-signup">
+        </div>
+
+@guest
+          <a href="{{ route('showRegisterForm') }}" class="btn btn-primary btn-signup">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -86,9 +121,10 @@
               />
             </svg>
 
-            Signup
+
+            {{ __('vendors.sing_up') }}
           </a>
-          <a href="/login.html" class="btn btn-login flex items-center">
+          <a href="{{ route('showLoginForm') }}" class="btn btn-login flex items-center">
             <svg
               style="width: 18px; fill: currentColor; margin-right: 4px"
               viewBox="0 0 1024 1024"
@@ -100,8 +136,9 @@
                 fill=""
               />
             </svg>
-            Login
+           {{__('vendors.login')}}
           </a>
+          @endguest
         </div>
       </div>
     </header>
