@@ -22,12 +22,20 @@
                 <input type="password" name="password" required placeholder="@lang('constants.password')" />
               </div>
               <div class="text-right mb-medium">
-                <a href="/password-reset.html" class="auth-page-password-reset"
+                <a href="{{ route('password.request') }}" class="auth-page-password-reset"
                 >@lang('auth.reset_password')</a>
               </div>
 
               <button type="submit" id="login-submit" class="btn btn-primary btn-login w-full">@lang('vendors.login')</button>
 
+              <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                </div>
+                
               <div class="grid grid-cols-2 gap-1 social-auth-buttons">
                 <a href="{{ route('auth.google_redirection') }}" class="btn btn-default flex justify-center items-center gap-1">
                     <img src="{{ asset('appAssets/img/google.png') }}" alt="" style="width: 20px" />

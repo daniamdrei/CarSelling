@@ -16,11 +16,12 @@ return [
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'logout' => 'You are now signed out',
-     'sending'=>'Sending ....',
+    'sending'=>'Sending ....',
     'Registered' => ' Registered Successfully' ,
     'error_occurred'=>'An error occurred, try again.',
     'registration_failed'=>'Registration Failed',
     'create_account'=>'Create Account',
     'already_have_an_account'=>'Already have an account',
+    'email_send'=>'send link via email',
 
 ];

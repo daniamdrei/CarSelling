@@ -33,5 +33,6 @@ return [
     'create_account'=>'انشاء حساب',
     'already_have_an_account'=>'لديك حساب بالفعل',
     "don't_have_an_account"=>'ليس لديك حساب',
+    'email_send'=>'ارسال الرابط عبر البريد الاكتروني',
 
 ];

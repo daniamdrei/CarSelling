@@ -39,6 +39,7 @@
             {{ __('landing.add_new_car')}}
           </a>
           <div class="navbar-menu" tabindex="-1">
+            @auth
             <a href="javascript:void(0)" class="navbar-menu-handler">
               {{ __('landing.my_account') }}
               <svg
@@ -56,7 +57,7 @@
                 />
               </svg>
             </a>
-            @auth
+
             <ul class="submenu">
               <li>
                 <a href="my_cars.html">{{ __('landing.my_cars') }}</a>

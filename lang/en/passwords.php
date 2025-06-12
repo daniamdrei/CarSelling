@@ -21,5 +21,7 @@ return [
     'user' => "We can't find a user with that email address.",
     'reset_code' => "The code to reset your password is: <b>:code</b>",
     'resetMobile' => 'We have send an sms your password reset code',
+    'email_send'=>'A link will be sent via email , email must be valid'
+
 
 ];

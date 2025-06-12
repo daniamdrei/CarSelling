@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialiteController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -22,6 +24,16 @@ Route::group(
 
         Route::get('register' ,[RegisterController::class , 'showRegisterForm'])->name('showRegisterForm');
         Route::post('register' , [RegisterController::class , 'register'])->name('register');
+
+        Route::controller(ResetPasswordController::class)->group(function(){
+
+            Route::get('forgot-password' ,  'index')->name('password.request');
+            Route::post('forgot-password' , 'EmailHandling')->name('password.email');
+            Route::get('reset-password/{token}', 'ResetPasswordForm')->name('password.reset');
+            Route::post('reset-password','ResetPassword' )->name('password.update');
+
+        });
+
     });
 
     // Route::middleware(['auth'])->group(function () {
